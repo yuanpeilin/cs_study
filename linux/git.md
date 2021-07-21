@@ -39,6 +39,7 @@
 # add
 * **`git add --renormalize <file_path>`** 设置autocrlf之后更新换行符
 * **`git add -u <file_path>`** 只添加已追踪文件, 不添加新增文件
+* **`git add --patch`** 按照补丁来添加修改
 
 # blame
 * **`git blame [--] <file path>`** 查看文件每一行修改的时间与作者
@@ -131,6 +132,7 @@ git config --global pull.rebase true
 * **`git diff <--cached | --staged>`** 查看暂存区和版本库的差异(已暂存的修改)
 * **`git diff --name-status <commit_id1> <commit_id2>`** 获取两次commit修改的文件
 * **`git diff <--ours | --theirs | --base>`** 合并时比较
+* **`git diff --check`** 找到可能的空白错误
 
 # grep
 * **`git grep <-c | --count> <sting>`** 只显示匹配的个数
@@ -286,6 +288,11 @@ git config --global pull.rebase true
 * **`git clone -o <name> <url>`** 指定远程仓库名(取代origin)
 * **`git ls-remote <remote-repo>`** 查看某个远程仓库详细信息(需要网络)
 * **`git ls-remote origin`** 列出远程仓库信息(分支, tag, PR及其的hash值)
+* **`git format-patch -M origin/master`** 形成补丁文件(当前分支相对于origin/master的差异)
+* **`git apply /tmp/patch-ruby-client.patch`** 应用一个补丁(兼容diff生成的补丁)
+* **`git apply --check 0001-seeing-if-this-helps-the-gem.patch`** 检查补丁是否可用
+* **`git am 0001-limit-log-function.patch`** Apply Mailbox, 应用一个补丁(format-patch生产的补丁)
+* **`git am -3 0001-seeing-if-this-helps-the-gem.patch`** 使用三方合并应用补丁
 
 ### 使用不同的配置文件
 * **`gitdir`** 匹配目录, 注意是 **git** 不是get

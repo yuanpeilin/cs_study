@@ -320,9 +320,9 @@ git config --global pull.rebase true
 
 
 # revert
+* **`git revert -n <commit_id>`** 不自动commit
 * **`git revert HEAD`** 撤销HEAD的修改
 * **`git revert HEAD~`** 撤销HEAD~的修改(不会撤销HEAD的修改, 只撤销一个commit的修改)
-* **`git revert <commit_id>`** 
 * **`git revert -m 1 <commit_id>`** 对于 **两个分支合并而来的提交** , 指定第一个分支为主线分支, 撤销第二个分支的修改
 * **`git revert --no-commit`** 不自动生成反向修改的提交, 只改动暂存区
 * **`git revert <commit_id1>..<commit_id2>`** 撤销一系列提交, 左开右闭, 不包括1包括2

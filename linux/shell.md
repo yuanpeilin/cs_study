@@ -1,6 +1,6 @@
 # 目录
 * **杂项**
-    - [查看shell类型](#查看shell类型)
+    - [查看所有shell](#查看所有shell)
     - [Debug](#debug)
     - [option argument paramete](#选项)
 * **变量类型**
@@ -12,9 +12,11 @@
     - [while](#while)
     - [case](#case)
     - [select](#select)
+* **字符串**
+    - [字符串长度](#字符串长度)
+    - [切割字符串](#切割字符串)
+    - [字符串替换](#字符串替换)
 * [切割参数](#切割参数)
-* [切割字符串](#切割字符串)
-* [字符串替换](#字符串替换)
 * [模式匹配](#模式匹配)
 * [引号](#引号)
 * [整数进制](#整数进制)
@@ -34,17 +36,21 @@
 
 
 
-# 查看shell类型
+查看所有shell
+=============
 查看 */etc/shells* 文件
 
-# Debug
+Debug
+=====
 ```sh
 $ bash -x <shell script>
 ```
 
-# 选项
+选项
+====
 
-# 数组
+数组
+====
 ### 定义数组
 ```sh
 declare -a array=(01 002 3 004)
@@ -115,9 +121,8 @@ array=(1 er three dddd)
 ff array   # 注意此处没有$符号
 ```
 
-*************************************************************************
-
-# Map
+Map
+====
 ### 定义map
 ```sh
 array=([one]=1 [six]=liu)
@@ -148,7 +153,8 @@ ${!array[@]}
 array+=(--greeting="Hello ${name}")
 ```
 
-# if
+if
+====
 `if`和`then`在同一行的话, 判断条件后要加一个分号
 
 ### 语法
@@ -175,7 +181,8 @@ else
 fi
 ```
 
-# for
+for
+====
 ### 语法
 ```sh
 for var in item1 item2 ... itemN; do
@@ -205,7 +212,8 @@ done
 echo sum=$sum
 ```
 
-# while
+while
+=====
 ### 语法
 ```sh
 while condition; do
@@ -240,7 +248,8 @@ while read -r line; do
 done < ~/.todo
 ```
 
-# case
+case
+====
 ### 语法
 ```sh
 case variable in
@@ -278,7 +287,8 @@ case $KEY in
 esac
 ```
 
-# select
+select
+======
 ### 用法
 * select会显示PS3提示符
 * 用户输入被保存在内置变量`REPLY`中
@@ -302,17 +312,16 @@ select var in "dog" "cat" "bee"; do
 done
 ```
 
-# 切割参数
-* `${@:begin}` 从begin开始, 取后面所有的位置参数
-* `${@:begin:count}` 从begin开始, 取后面count个的位置参数
-
+字符串长度
+==========
 ```sh
-test.sh v1 v2 v3 v4 v5
-echo ${@:3}     # v3 v4 v5
-echo ${@:3:2}   # v3 v4
+$ a=12345
+$ echo ${#a}
+5
 ```
 
-# 切割字符串
+切割字符串
+==========
 
 表达式                  | 说明
 ----------------------- | ----
@@ -320,16 +329,22 @@ ${string:offset}        | 初始位置为0, 从offset开始切割, 直至字符�
 ${string:offset:length} | 从offset开始, 长度为length
 
 ```sh
-filename=/etc/apache2
-echo ${filename:1:3} # etc
-echo ${filename:5} # apache2
+$ ilename=/etc/apache2
+$ echo ${filename:5} # apache2
+$ echo ${filename: -3} # he2   从尾部截取必须加空格
+$ echo ${filename:(-3)} # he2   从尾部截取必须加空格
+$ echo ${filename:1:3} # etc
 ```
 
-# 字符串替换
-* `${string/pattern/string}` 将`string`中的第一个`pattern`被替换为`string`
-* `${string//pattern/string}` 将`string`中所有的`pattern`被替换为`string`
-* `${string/#pattern/string}` `string`的开头完全匹配`pattern`的话, 将其替换为`string`
-* `${string/%pattern/string}` `string`的结尾完全匹配`pattern`的话, 将其替换为`string`
+字符串替换
+==========
+
+表达式                    | 说明
+------------------------- | ----
+${string/pattern/string}  | 将`string`中的第一个`pattern`被替换为`string`
+${string//pattern/string} | 将`string`中所有的`pattern`被替换为`string`
+${string/#pattern/string} | `string`的开头完全匹配`pattern`的话, 将其替换为`string`
+${string/%pattern/string} | `string`的结尾完全匹配`pattern`的话, 将其替换为`string`
 
 ```sh
 $ a='aa1aa2aa3aa4aa'
@@ -355,7 +370,19 @@ $ echo ${a/%aa/bb}
 aa1aa2aa3aa4bb
 ```
 
-# 模式匹配
+切割参数
+========
+* `${@:begin}` 从begin开始, 取后面所有的位置参数
+* `${@:begin:count}` 从begin开始, 取后面count个的位置参数
+
+```sh
+test.sh v1 v2 v3 v4 v5
+echo ${@:3}     # v3 v4 v5
+echo ${@:3:2}   # v3 v4
+```
+
+模式匹配
+========
 
 表达式               | 说明
 -------------------- | ----
@@ -364,7 +391,8 @@ ${variable##pattern} | 从变量头部开始, 删除最长的匹配部分, 并�
 ${variable%pattern}  | 从变量尾部开始, 删除最短的匹配部分, 并返回其余部分
 ${variable%%pattern} | 从变量尾部开始, 删除最长的匹配部分, 并返回其余部分
 
-# 引号
+引号
+====
 * 使用 **单引号** 时, 将不允许在单引号的范围内引用其他变量的值, $符号或者其他任何符号将作为普通字符看待
 * 使用 **双引号** 时, 允许在双引号的范围内使用$符号引用其他变量的值(变量引用)
 * 使用 **反撇号** 时, 允许将执行特定命令的输出结果赋值给变量, 反撇号中的内容要求是可执行的命令, 需要嵌套使用时, 可以将反撇号改为`$(...)`的形式
@@ -374,7 +402,8 @@ echo '<<< echo $x >>> displays the value of x, which is' $x
 echo '<<< echo $x >>> displays the value of x, which is' "$x"
 ```
 
-# 整数进制
+整数进制
+========
 * 数字以`0`开头的话就是**8进制数**
 * 数字以`0x`开头的话那么就是**16进制数**
 * 数字中间嵌入了`#`的话, 那么就被认为是**BASE#NUMBER**形式的标记法
@@ -393,7 +422,8 @@ $ echo $(( a + 1 ))
 16
 ```
 
-# 整数运算
+整数运算
+========
 `**`表示幂运算, `5**3`等于125
 
 Expression               | Example                              | increase                         | Comment
@@ -404,7 +434,9 @@ Expression               | Example                              | increase      
 `$[算术式]`              | `r=$[4+5]`                           | -                                | 切勿使用
 `let 算术式`             | `let r=8+16`                         | `let num++` <br> `let num=num+1` | 切勿使用
 
-# 特殊变量
+特殊变量
+========
+
 变量   | 作用说明
 ------ | --------
 `$0`   | 获取当前Shell脚本的文件名; 如果执行脚本包含了路径, 那么就包括脚本路径
@@ -419,8 +451,8 @@ Expression               | Example                              | increase      
 `$!`   | 后台运行的最后一个进程号
 `$-`   | [set](command.md/#set)设置的选项, 一般为`himBHs`
 
-# 变量存在性
-大括号里面直接写变量名或数字, 括号外面已经有`$`符号了无需再添加
+变量存在性
+==========
 
 表达式          | 存在且非null | 值为null               | 不存在                 | 意图
 --------------- | ------------ | ---------------------- | ---------------------- | ----
@@ -430,7 +462,8 @@ ${var:=value}   | 返回var      | 将var值置为value且返回 | 将var值置�
 ${var:?message} | 返回var      | 返回message并退出脚本  | 返回message并退出脚本  | 捕获未定义变量造成的异常
 ${var:+value}   | 返回value    | 返回null               | 返回null               | 修改一个已存在变量的值
 
-# 条件测试
+条件测试
+========
 测试特定的表达式是否成立, 当条件成立时, 命令执行后的返回值为0, 否则为其他数值
 
 ### 条件测试表达式

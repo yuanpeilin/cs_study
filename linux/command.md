@@ -10,11 +10,11 @@
 * **j** [`jobs*`](#jobs) [`join`](#join) [`journalctl`](systemd.md/#日志管理) [`jq`](#jq)
 * **k** [`kill*`](#kill)
 * **l** [`less`](#less) [`ln`](#ln) [`local*`](#local) [`localectl`](systemd.md/#localectl) [`locate`](#locate) [`loginctl`](systemd.md/#loginctl) [`ls`](#ls) [`lsattr`](#lsattr) [`lsblk`](#lsblk) [`lsof`](#lsof)
-* **m** [`man`](#man) [`md5sum`](#md5sum) [`mkdir`](#mkdir) [`mkfs`](#mkfs) [`mount`](#mount)
+* **m** [`man`](#man) [`md5sum`](#md5sum) [`mkdir`](#mkdir) [`mkfs`](#mkfs) [`more`](#more) [`mount`](#mount)
 * **n** [`ncdu`](#ncdu) [`netstat`](#netstat) [`nohub`](#nohub)
 * **p** [`pandoc`](#pandoc) [`pgrep`](#pgrep) [`pkill`](#pkill) [`ps`](#ps) [`pstree`](#pstree)
 * **r** [`rsync`](#rsync) [`runlevel`](#runlevel)
-* **s** [`scp`](#scp) [`sed`](#sed) [`select`](shell.md/#select) [`set*`](#set) [`shopt*`](#shopt) [`sort`](#sort) [`source*`](#source) [`ssh`](ssh.md/#ssh) [`ssh-keygen`](ssh.md/#sshkeygen) [`ssh-keyscan`](ssh.md/#sshkeyscan) [`systemd-analyze`](systemd.md/#systemd-analyze) [`systemctrl`](systemd.md/#unit)
+* **s** [`scp`](#scp) [`sed`](#sed) [`select`](shell.md/#select) [`set*`](#set) [`shopt*`](#shopt) [`sort`](#sort) [`source*`](#source) [`ssh`](ssh.md/#ssh) [`ssh-keygen`](ssh.md/#sshkeygen) [`ssh-keyscan`](ssh.md/#sshkeyscan) [`su`](#su) [`systemd-analyze`](systemd.md/#systemd-analyze) [`systemctrl`](systemd.md/#unit)
 * **t** [`tail`](#tail) [`tar`](#tar) [`tee`](#tee) [`timedatectl`](systemd.md/#timedatectl) [`top`](#top) [`tr`](#tr) [`trap*`](#trap) [`tree`](#tree) [`truncate`](#truncate) [`type*`](#type)
 * **u** [`ufw`](#ufw) [`uniq`](#uniq) [`uptime`](#uptime) [`useradd`](user.md/#增加用户) [`userdel`](user.md/#删除用户) [`usermod`](user.md/#修改用户)
 * **w** [`whereis`](#whereis) [`while`](shell.md/#while)
@@ -361,6 +361,44 @@ hello World
 创建空文件
 
 # fdisk
+执行次命令必须拥有root权限
+
+### 语法
+* `-l` `--list` 查看硬盘分区和设备名
+    - IDE硬盘设备名为: hda, hdb, hdc, hdd
+    - SCSI硬盘的设备名为: sda, sdb...
+    - `hda1`表示had的地一个硬盘分区, `had2`表示had的第二个硬盘分区...
+
+### 例子
+```sh
+$ sudo fdisk -l
+Disk /dev/nvme0n1: 238.5 GiB, 256060514304 bytes, 500118192 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: gpt
+Disk identifier: 2236470E-1817-4EDA-A0F6-BBEB0954704B
+
+Device             Start       End   Sectors   Size Type
+/dev/nvme0n1p1      2048    206847    204800   100M EFI System
+/dev/nvme0n1p2    206848    239615     32768    16M Microsoft reserved
+/dev/nvme0n1p3    239616 313424150 313184535 149.3G Microsoft basic data
+/dev/nvme0n1p4 313425920 314572799   1146880   560M Windows recovery environment
+
+
+Disk /dev/sda: 931.5 GiB, 1000204886016 bytes, 1953525168 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: gpt
+Disk identifier: D831EBA7-725D-473D-9685-3D5F7F97F315
+
+Device          Start        End    Sectors  Size Type
+/dev/sda1        2048  209717247  209715200  100G Microsoft basic data
+/dev/sda2   209717248 1677723647 1468006400  700G Microsoft basic data
+/dev/sda3  1677723648 1678774271    1050624  513M EFI System
+/dev/sda4  1678774272 1953523711  274749440  131G Linux filesystem
+```
 
 # ffmpeg
 ### 例子
@@ -550,15 +588,19 @@ done
 
 # grep
 ### 语法
+* `-E` `--extended-regexp` ERE, 正则表达式参考[linux/regex.md](regex.md)
+* `-F` `--fixed-strings`
+* `-G` `--basic-regexp` BRE, **默认**
+* `-P` `--perl-regexp` PCRE
 * `-A <number>` 除了当前行, 还输出当前行 **后面** number行
 * `-B <number>` 除了当前行, 还输出当前行 **前面** number行
 * `-C <number>` 除了当前行, 还输出当前行 **前后** number行
-* `-E` `--extended-regexp` ERE, 参考[linux/regex.md](regex.md)
-* `-G` `--basic-regexp` BRE
-* `-P` `--perl-regexp` PCRE
+* `-a` `--text` 将二进制文件视为文本文件
 * `-i` 忽略大小写
+* `-n` `--line-number` 输出行号
 * `-o` 仅输出匹配的部分(默认输出匹配的行)
-* `-r` 递归, 搜索目录
+* `-r` 递归, 搜索目录, 只有在命令行给出的符号链接才起作用
+* `-R` `--dereference-recursive` 同`-r`, 但所有的符号链接都起作用
 * `-v` `--invert-match` 对结果取反
 
 # gzip
@@ -646,25 +688,26 @@ $ kill -9 PID
 
 # ls
 ### 语法
-**`ls [-alhtAi] [name...]`**
-* `-a` 列出所有文件, 包括`.`开头的
-* `-A` 同`-a`, 但不列出`.`(目前目录)及`..`(父目录)
-* `-F` 文件夹后会有`/`, 其他符号包括`* / = > @ |`
+* `-a` `--all` 列出所有文件, 包括隐藏文件
+* `-A` `--almost-all` 同`-a`, 但不列出`.`及`..`
+* `-F` `--classify` 用符号标记文件类型: 目录`/`, 可执行文件`*`, 符号链接`@`, 管道`|`, socket文件`=`, ???文件`>`
+* `-h` `--human-readable` 格式化文件大小
 * `-i` 查看inode
+* `-l` 输出长格式
+* `-L` `--dereferenc` 若文件为符号链接, 输出所指向文件的信息, 而不是符号链接的信息
 * `-r` 将排序结果反向输出
 * `-R` 递归, 列出所有文件包括文件夹中的文件
 * `-S` 按大小排序, 大的在前
-* `-t` 将文件依建立时间的先后次序列出
+* `-t` 按文件修改时间排序, 最近修改的在前
 
 ### 例子
-文件类型
 * `d` 目录文件
 * `-` 普通文件
 * `c` 字符设备文件
 * `b` 块设备文件
 * `l` 符号链接文件
 
-```
+```sh
 类型和权限   文件硬链接数目   文件拥有者   文件从属用户组   文件大小   时间戳          文件名
 drwxr-xr-x   2                ypl          ypl              4096       Jan 13 20: 04   Desktop
 -rw-------   1                ypl          ypl              32         May 28 13: 53   .lesshst
@@ -700,7 +743,7 @@ drwx------   1                ypl          ypl              4096       May 12 18
 * `man -w <command>` 显示手册所在的路径
 * `man -aw command` 显示所有章节的手册路径
 * `man -M <path> <command>` 从指定目录查看手册
-* `man -p <program>` 指定分页程序, 如less more cat pager等
+* `man -p <program>` 指定分页程序, 如less [more](#more) cat pager等
 
 ### 例子
 ```sh
@@ -737,7 +780,27 @@ $ mkdir -p -m 700 test
 
 # mkfs
 
+# more
+分页查看文件, 退出之后残留所有看过的内容, 会**显示百分比**
+
+### 语法
+* `-number` 每一页显示number行
+* `+number` 从第number行开始显示
+* `-c` 每翻一页就清屏, 而不是接在下一页后面
+
 # mount
+执行次命令必须拥有root权限
+
+### 语法
+**`mount [-fnrsvw] [-t fstype] [-o options] <device name> <dir>`**
+* `<device name>` 可通过[`fdisk`](#fdisk)命令查看设备名称
+
+### 例子
+```sh
+$ mount -t vfat /dev/hda1 /mnt/c
+
+$ unmount /mnt/c
+```
 
 # ncdu
 创建稀疏文件
@@ -1003,13 +1066,14 @@ done
 # shopt
 显示和设置shell中的行为选项
 
-### 例子
+### 语法
 * `shopt` 显示所有的行为及其状态
 * `shopt -s <behavior>` 打开行为
 * `shopt -u <behavior>` 关闭行为
 
 ### 具体行为
-- **huponexit** 退出session时是否把SIGHUP信号发给后台任务, 默认为 `OFF` 不发送, 即退出session后台任务继续执行
+* **extglob** 打开扩展的通配(globbing)
+* **huponexit** 退出session时是否把SIGHUP信号发给后台任务, 默认为 `OFF` 不发送, 即退出session后台任务继续执行
 
 # sort
 ### 语法
@@ -1051,8 +1115,16 @@ $ sort -k1, 1 | sort -s -k2, 2
 ```
 
 # source
-在当前的shell环境执行脚本, `source file.sh`可缩写为`. file.sh`(脚本无需执行权限)  
-执行脚本`./file.sh` `bash file.txt`是在子shell中执行, 不会影响到父shell  
+在**当前的shell环境**执行脚本, `source file.sh`可缩写为`. file.sh`(脚本无需执行权限)  
+执行脚本`./file.sh` `bash file.txt`是在**子shell**中执行, 不会影响到父shell  
+
+# su
+切换用户, 不输入用户的话默认为`root`  
+装机后若未设置root密码, 先通过`sudo -i`设置root密码  
+
+### 语法
+**`su [option] [username]`**
+* `-s <SHELL>` `--shell <SHELL>` 指定shell
 
 # tail
 ### 语法
@@ -1066,15 +1138,19 @@ $ sort -k1, 1 | sort -s -k2, 2
 
 # tar
 ### 语法
+* `-j` 使用bz2压缩或解压
+* `-J` 使用xz压缩或解压
+* `-z` 使用gzip压缩或解压
+* `-Z` 使用compress压缩或解压
+
+<br>
+
 * `-c` 建立打包文件
 * `-C` 指定解压路径
 * `-f` 指定打包文件名
-* `-j` 使用bz2压缩或解压
-* `-J` 使用xz压缩或解压
 * `-t` 列出打包文件的内容
 * `-v` 显示指令执行过程
 * `-x` 从打包文件中提取文件
-* `-z` 使用gzip压缩或解压
 
 ### 例子
 ```sh

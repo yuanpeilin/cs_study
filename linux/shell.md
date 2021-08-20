@@ -44,6 +44,29 @@ $ bash -x <shell script>
 ```
 
 # 选项
+* **arguments** arguments也叫位置参数(positional parameters), 命令中的每个单词都是argument
+* **options** 有长选项和短选项, 类似于`-l -v --long`
+* **parameter** 既向命令提供信息也向他的option提供信息, 类似于`mysql -u root`中的`root`
+
+```sh
+$ ls -la /tmp /var/tmp
+arg0 = ls
+arg1 = -la
+arg2 = /tmp
+arg3 = /var/tmp
+
+$ ls -la /tmp /var/tmp
+option1= -l
+option2= -a
+
+$ ls -la /tmp /var/tmp
+parameter1= /tmp
+parameter2= /var/tmp
+
+$ ls -l -- -a
+option1 = -l
+parameter1 = -a
+```
 
 # 数组
 ### 定义数组

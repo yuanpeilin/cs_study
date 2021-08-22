@@ -72,7 +72,7 @@ todo_remove() {
 todo_getopt() {
     local parameters=$(getopt -o a:cd:hiLlr: --long add:,clean,done:,help,insert,LIST,list,remove: -n "$0" -- "$@" 2>/dev/null)
 
-    [[ "$#" == 0 ]] && todo_help && return 1
+    [[ "$#" == 0 ]] && todo_help && exit 1
 
     while true; do
         case "$1" in
@@ -85,7 +85,7 @@ todo_getopt() {
         -L | --LIST) todo_list "time" && shift ;;
         -r | --remove) todo_remove "$@" && shift 2 ;;
         --) break ;;
-        *) break && return 2 ;;
+        *) break && exit 2 ;;
         esac
     done
 }
@@ -93,7 +93,7 @@ todo_getopt() {
 main() {
     if [[ "$#" != 1 && "$#" != 2 ]]; then
         todo_help
-        return 3
+        exit 3
     else
         todo_getopt "$@"
     fi
@@ -103,4 +103,4 @@ main "$@"
 # 由于执行下面的unset之后$?会变成0, 所以此处需要一个临时变量记录main的$?
 temp="$?"
 unset path todo_list todo_add todo_clean todo_done todo_help todo_insert todo_remove todo_getopt main
-return "${temp}"
+exit "${temp}"

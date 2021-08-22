@@ -136,10 +136,6 @@ sysinfo(){
     df -hit ext4
 }
 
-todo(){
-    . ~/todo.sh "$@"
-}
-
 # +----------------------------------+
 # |          some GIT alias          |
 # +----------------------------------+
@@ -263,7 +259,7 @@ ln_check(){
     fi
 }
 ln_check /home/ypl/workspace/yuanpeilin.github.io/linux/bashrc.sh /home/ypl/.bashrc
-ln_check /home/ypl/workspace/yuanpeilin.github.io/linux/todo.sh /home/ypl/todo.sh
+ln_check /home/ypl/workspace/yuanpeilin.github.io/linux/todo.sh /usr/bin/todo
 ln_check /home/ypl/workspace/yuanpeilin.github.io/linux/src/vimrc /home/ypl/.vimrc
 
 todo -l

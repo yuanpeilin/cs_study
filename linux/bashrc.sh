@@ -38,15 +38,6 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -158,7 +149,7 @@ alias gindex='git ls-files -s'
 alias glast='git show --stat HEAD'
 alias gmerge='git merge --no-ff -m'
 alias gpprint='git cat-file -p'
-alias gptags='git push origin --tags'
+alias gptags='git push --tags'
 alias gpull='git pull'
 alias gpush='git push'
 alias grf='git reflog'

@@ -1,9 +1,9 @@
-* **a** [`at`](#at)
+* **a** [`at`](#at) [`awk`](awk.md)
 * **b** [`bg*`](#bg)
 * **c** [`case`](shell.md/#case) [`cat`](#cat) [`chattr`](#chattr) [`chgrp`](#chgrp) [`chkconfig`](#chkconfig) [`chmod`](#chmod) [`chown`](#chown) [`col`](#col) [`compgen*`](#compgen) [`complete*`](#complete) [`compopt*`](#compopt) [`corntab`](#corntab) [`cp`](#cp) [`curl`](#curl) [`cut`](#cut)
 * **d** [`declare*`](#declare) [`df`](#df) [`disown`](#disown) [`du`](#du)
 * **e** [`echo*`](#echo) [`eval*`](#eval) [`export*`](#export)
-* **f** [`fallocate`](#fallocate) [`fdisk`](#fdisk) [`ffmpeg`](#ffmpeg) [`fg*`](#fg) [`file`](#file) [`fim`](#fim) [`find`](#find) [`finger`](user.md/#查看用户) [`for`](shell.md/#for) [`free`](#free)
+* **f** [`fallocate`](#fallocate) [`fdisk`](#fdisk) [`ffmpeg`](#ffmpeg) [`fg*`](#fg) [`file`](#file) [`fim`](#fim) [`find`](#find) [`finger`](user.md/#查看用户) [`for`](shell.md/#for) [`free`](#free) [`ftp`](ftp.md)
 * **g** [`getopt`](#getopt) [`getopts*`](#getopts) [`grep`](#grep) [`groupadd`](user.md/#增加组) [`groupdel`](user.md/#删除组) [`groupmod`](user.md/#修改组) [`gpasswd`](user.md/#修改组) [`gzip`](#gzip)
 * **h** [`hash*`](#hash) [`head`](#head)
 * **i** [`id`](user.md/#查看用户) [`if`](shell.md/#if) [`ifconfig`](#ifconfig) [`imagemagick`](#imagemagick)
@@ -22,8 +22,8 @@
 
 
 
-*****************************************************************************
-*****************************************************************************
+***************************************************************************************************
+***************************************************************************************************
 
 
 
